@@ -1,4 +1,14 @@
+//login into gl.artoo.in
+
 $("input[name=_username]").val('artoo');
 $("input[name=_password]").val('Artoo2010');
 $but=$(".btn")
 $but.click() //form submit wont work since the form doesnt have a button with submit attribute and the button is independent handling the submit action
+
+
+
+//count all tags
+var $allOfThem = $('*');
+$allOfThem.length;
+
+
