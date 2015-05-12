@@ -1,0 +1,1 @@
+git rm --cached -m for removing files from the repo but not from the local fs 
