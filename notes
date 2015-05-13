@@ -1,1 +1,3 @@
-git rm --cached -m for removing files from the repo but not from the local fs 
+git rm --cached -m for removing files from the repo but not from the local fs
+
+in Javascript task , better try with the http://robertnyman.com/2008/10/09/explaining-javascript-scope-and-closures/ for the closures link . the other two links are confusing and not crystal clear  
