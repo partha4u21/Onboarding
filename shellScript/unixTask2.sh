@@ -8,10 +8,10 @@ do
 		do
 		if [[ $fileName == *"$name-$j"* ]]
 		then
-		echo "voila"
-		mv $fileName 14-05-2015-$j.log	
-		else 
-		echo "file not found"
+		mv "$fileName" "14-05-2015-$j".log 		
+		echo "$fileName" 
+		#else 
+		#echo "file not found"
 		fi
 	done
 done
