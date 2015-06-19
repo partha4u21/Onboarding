@@ -1,0 +1,47 @@
+//document revision
+///football/_design/champ_team/_view/championship%20table%20for%20team
+
+{
+   "_id": "_design/champ_team",
+   "_rev": "17-6b1f5fd83663b4ddac71d68f30194b76",
+   "language": "javascript",
+   "views": {
+       "championship table for team": {
+           "map": " function(doc,req) {\n\t\n\tif(doc.result.goalsHomeTeam > doc.result.goalsAwayTeam) \n\t\t{\n\t\tgoalDiff= doc.result.goalsHomeTeam - doc.result.goalsAwayTeam;\t\n\t\temit(doc.home_team, {w:1, d: 0, l:0, gd: goalDiff, points: 3});\n    \temit(doc.away_team, {w:0, d: 0, l:1, gd: -1*goalDiff , points: 0});\t\n\t\t}\n\telse if(doc.result.goalsHomeTeam < doc.result.goalsAwayTeam)\n\t\t{\n\t\tgoalDiff= doc.result.goalsAwayTeam - doc.result.goalsHomeTeam;\t\n\t\temit(doc.away_team, {w:1, d: 0, l:0, gd: goalDiff, points: 3});\n    \temit(doc.home_team, {w:0, d: 0, l:1, gd: -1*goalDiff , points: 0});\t\n\t\t}\t\n\telse \n\t\t{\n\t\temit(doc.home_team, {w:0, d: 1, l:0, gd: 0 , points: 1});\n    \temit(doc.away_team, {w:0, d: 1, l:0, gd: 0 , points: 1});\n\t\t}\n} \n\n",
+           "reduce": "function(keys, values){\n    var obj = {\n    \tw: 0,\n    \tl: 0,\n    \td: 0,\n    \tgd: 0,\n    \tpoints: 0\n    }\n     for(i = 0;i<values.length;i++){\n        obj.w += values[i].w\n        obj.d += values[i].d\n        obj.l += values[i].l\n        obj.points += values[i].points\n        obj.gd += values[i].gd\n    }\n    return obj;\n}"
+       }
+   }
+}
+
+
+//command to get the reduced form of the teams 
+//check the group_level is 1, not 0. 0 is no grouping , 1 is the grouping by the first key , there is only one key in this case 
+
+curl -X GET http://127.0.0.1:5984/football/_design/champ_team/_view/championship%20table%20for%20team?group_level=1
+
+//result of the curl reduced in the command and in the database 
+
+{"rows":[
+{"key":"AS Monaco","value":{"w":20,"l":7,"d":11,"gd":25,"points":71}},
+{"key":"AS Saint-Étienne","value":{"w":19,"l":7,"d":12,"gd":21,"points":69}},
+{"key":"EA Guingamp","value":{"w":15,"l":19,"d":4,"gd":-14,"points":49}},
+{"key":"FC Évian Thonon Gaillard","value":{"w":11,"l":23,"d":4,"gd":-21,"points":37}},
+{"key":"FC Lorient","value":{"w":12,"l":19,"d":7,"gd":-6,"points":43}},
+{"key":"FC Metz","value":{"w":7,"l":22,"d":9,"gd":-30,"points":30}},
+{"key":"FC Nantes","value":{"w":11,"l":15,"d":12,"gd":-11,"points":45}},
+{"key":"FC Toulouse","value":{"w":12,"l":20,"d":6,"gd":-21,"points":42}},
+{"key":"Girondins Bordeaux","value":{"w":17,"l":9,"d":12,"gd":3,"points":63}},
+{"key":"Montpellier HSC","value":{"w":16,"l":14,"d":8,"gd":7,"points":56}},
+{"key":"OGC Nice","value":{"w":13,"l":16,"d":9,"gd":-9,"points":48}},
+{"key":"Olympique Lyon","value":{"w":22,"l":7,"d":9,"gd":39,"points":75}},
+{"key":"Olympique Marseille","value":{"w":21,"l":11,"d":6,"gd":34,"points":69}},
+{"key":"OSC Lille","value":{"w":16,"l":14,"d":8,"gd":1,"points":56}},
+{"key":"Paris SG","value":{"w":24,"l":3,"d":11,"gd":47,"points":83}},
+{"key":"RC Lens","value":{"w":7,"l":23,"d":8,"gd":-29,"points":29}},
+{"key":"SC Bastia","value":{"w":12,"l":15,"d":11,"gd":-9,"points":47}},
+{"key":"SM Caen","value":{"w":12,"l":16,"d":10,"gd":-1,"points":46}},
+{"key":"Stade Reims","value":{"w":12,"l":18,"d":8,"gd":-19,"points":44}},
+{"key":"Stade Rennes","value":{"w":13,"l":14,"d":11,"gd":-7,"points":50}}
+]}
+
+
