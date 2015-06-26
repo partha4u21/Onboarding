@@ -1,0 +1,56 @@
+//Find all the employee whose salary is more than the avg for his dept
+
+select a.salary salary,a.emp_no empID,c.avg_salary avgDeptSalary,c.dept_no DeptNo
+from salaries a,dept_emp b,(select avg_salary,dept_no from avg_salary_dept_wise) c
+where a.salary > c.avg_salary and a.emp_no=b.emp_no and b.dept_no=c.dept_no
+
+
+
+
+//Print the name of distinct employee whose DOB is between 01/01/1960 to 31/12/1975.
+
+select distinct emp_no,birth_date from employees where birth_date between '1960-01-01' and  '1975-12-31'
+
+
+
+
+// Find number of employees according to gender whose DOB is between 01/01/1960 to 31/12/1975
+
+select count(gender),gender from employees where birth_date between '1960-01-01' and  '1975-12-31' group by gender 
+
+
+
+//Find name of employee whose name Start with ‘A’
+select first_name from employees where first_name LIKE 'A%'
+
+
+
+//Find employees hired between 1990 and 1995
+select emp_no,hire_date from employees where hire_date between '1990-01-01' and '1995-12-31'
+
+
+//All the employees who had more than three titles and list their titles
+select `emp_no`,count(title),GROUP_CONCAT(title) from titles group by emp_no having count(title)>=3
+
+
+
+//Employee details: Name, Title, Department, Department manager
+
+select 
+	CONCAT(first_name,' ',last_name) fullname,
+	GROUP_CONCAT(title) Title,
+	dept_emp.dept_no Department,
+	(select employees.first_name from employees where employees.emp_no=dept_manager.emp_no) Manager
+from employees,titles,dept_emp,dept_manager
+where 
+	employees.emp_no=titles.emp_no 
+	and dept_emp.emp_no=titles.emp_no 
+	and dept_emp.dept_no=dept_manager.dept_no
+group by fullname
+
+
+//Average salaries across departments for last 5 years
+select avg(salary),dept_no,salaries.to_date from salaries,dept_emp where salaries.emp_no=dept_emp.emp_no and salaries.from_date > '1997-01-01' and salaries.to_date > '2002-01-01' group by dept_no
+
+
+
